@@ -1,7 +1,7 @@
 JSLogger - Log errors and events from your Javascript app
 ========
 
-#Why to use it?
+##Why to use it?
 
 * Keep track of your clientside code erros in production so you can debug them later.
 * Track any user events on your site from your heavy Javascript app. (similar to Google Analytics events)
@@ -9,7 +9,7 @@ JSLogger - Log errors and events from your Javascript app
 * Send the logs and events on our site so your servers don't get overloaded.
 * Analyze and manage your logs from our management interface, anywhere, anytime.
 
-#How to use it?
+##How to use it?
 
 * Include the script in your web page, preferably before any other script:
 ```html
@@ -21,11 +21,11 @@ JSLogger - Log errors and events from your Javascript app
 ```
 * Watch your logs on our site.
 
-#How to track?
+##How to track?
 
 All Javascript errors in your site will be logged to our server by default. But you can also log and track events by your own.
 
-##Logs
+###Logs
 
 To log errors or other types of notifications use the `.log(data)` function
 ```javascript
@@ -35,7 +35,7 @@ jslogger.log("I am an exception")
 jslogger.log({exception: {name: "SignupFail", message: "The signup request failed."}})
 ```
 
-##Events
+###Events
 
 To log special events use the `.event(data)` function
 ```javascript
@@ -45,7 +45,7 @@ jslogger.event("The signup button was clicked.")
 jslogger.event({signup: {from: "Header red button"}})
 ```
 
-#Options
+##Options
 
 If you don't want to send logs to the server in development mode, set track option to `false`:
 ```javascript
@@ -56,7 +56,7 @@ If you don't want to track the errors in your site, set logWindowErrors to `fals
 new JSLogger({logWindowErrors: false});
 ```
 
-#How to apply?
+##How to apply?
 
 Our tool is still in BETA version. You can register here: [http://jslogger.com:5000/manage][]. For other question please send an e-mail to [support@jslogger.com][].
 For quick questions you can always ping us on Twitter - [@jslogger][] or twitt about how awesome is JSLogger - [#jslogger][].
