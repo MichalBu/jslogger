@@ -13,11 +13,11 @@ JSLogger - Log errors and events from your Javascript app
 
 * Include the script in your web page, preferably before any other script:
 ```html
-<script type="text/javascript" src="http://jslogger.com/jslogger.js"></script>
+<script type="text/javascript" src="//jslogger.com/jslogger.js"></script>
 ```
-or load it from a secure connection (SSL)
-```html
-<script type="text/javascript" src="https://jslogger.com/jslogger.js"></script>
+
+Don't include the protocol at the beginning and it will default to the current one you are using
+
 ```
 * Start monitoring errors:
 ```html
