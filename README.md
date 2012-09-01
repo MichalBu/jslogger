@@ -15,6 +15,10 @@ JSLogger - Log errors and events from your Javascript app
 ```html
 <script type="text/javascript" src="http://jslogger.com/jslogger.js"></script>
 ```
+or load it from a secure connection (SSL)
+```html
+<script type="text/javascript" src="https://jslogger.com/jslogger.js"></script>
+```
 * Start monitoring errors:
 ```html
 <script type="text/javascript">window.jslogger = new JSLogger();</script>
