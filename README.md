@@ -15,10 +15,6 @@ JSLogger - Log errors and events from your Javascript app
 ```html
 <script type="text/javascript" src="//jslogger.com/jslogger.js"></script>
 ```
-
-Don't include the protocol at the beginning and it will default to the current one you are using
-
-```
 * Start monitoring errors:
 ```html
 <script type="text/javascript">window.jslogger = new JSLogger();</script>
