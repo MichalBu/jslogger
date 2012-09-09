@@ -3,27 +3,25 @@ JSLogger - Log errors and events from your Javascript app
 
 [![Build Status](https://secure.travis-ci.org/jslogger/jslogger.png)](http://travis-ci.org/jslogger/jslogger)
 
-##Why to use it?
+##Why use it?
 
-* Keep track of your clientside code erros in production so you can debug them later.
-* Track any user events on your site from your heavy Javascript app. (similar to Google Analytics events)
-* Investigate what browser platforms generate more errors for your app.
-* Send the logs and events on our site so your servers don't get overloaded.
-* Analyze and manage your logs from our management interface, anywhere, anytime.
+* Keep track of your clientside errors.
+* Monitor your user's activity through events.
+* Investigate what browser platforms generate more errors.
+* Keep your logs in our cloud so your servers don't get overloaded.
+* Manage your logs from our Web interface.
 
 ##How to use it?
 
 * Include the script in your web page, preferably before any other script:
 `<script type="text/javascript" src="//jslogger.com/jslogger.js"></script>`
-
-* Start monitoring errors:
 `<script type="text/javascript">window.jslogger = new JSLogger();</script>`
 
 * Watch your logs on our site.
 
 ##How to track?
 
-All Javascript errors in your site will be logged to our server by default. But you can also log and track events by your own.
+All Javascript errors in your site will be logged to our server by default. But you can also log and track events on your own.
 
 ###Logs
 
@@ -58,8 +56,8 @@ new JSLogger({logWindowErrors: false});
 
 ##How to apply?
 
-Our tool is still in BETA version. You can register here: [http://jslogger.com:5000/manage][]. For other question please send an e-mail to [support@jslogger.com][].
-For quick questions you can always ping us on Twitter - [@jslogger][] or twitt about how awesome is JSLogger - [#jslogger][].
+Our tool is still in BETA version. You can register here: [http://jslogger.com:5000/manage][]. For other questions please send an e-mail to [support@jslogger.com][].
+For quick questions you can always ping us on Twitter - [@jslogger][] or tweet about how awesome JSLogger is - [#jslogger][].
 Like us on [Facebook][] and become a part of the [JSLogger community][].
 
 [http://jslogger.com:5000/manage]: http://jslogger.com:5000/manage
