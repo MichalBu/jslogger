@@ -1,6 +1,7 @@
 JSLogger - Log errors and events from your Javascript app
-[![Build Status](https://secure.travis-ci.org/jslogger/jslogger.png)](http://travis-ci.org/jslogger/jslogger)
 ========
+
+[![Build Status](https://secure.travis-ci.org/jslogger/jslogger.png)](http://travis-ci.org/jslogger/jslogger)
 
 ##Why to use it?
 
