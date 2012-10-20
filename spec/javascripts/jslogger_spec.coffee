@@ -14,7 +14,10 @@ describe "JSLogger", ()->
   	expect(logger.proto).toEqual("protocol")
 
   it "has a port", ()->
-  	expect(logger.port).toEqual("6987")
+  	expect(logger.port).toEqual(80)
+
+  it "has a portSSL", ()->
+    expect(logger.portSSL).toEqual(143)
 
   it "tracks data by default", ()->
   	expect(logger.track).toEqual(true)
@@ -60,23 +63,20 @@ describe "JSLogger", ()->
     it "returns the current protocol from the location object", ()->
       expect(logger.getCurrentProtocol()).toEqual("protocol")
 
-  describe "getPortByProtocol", ()->
-    beforeEach ()->
-      logger.port = "1"
-    
+  describe "getPortByProtocol", ()->    
     describe "when the protocol is https", ()->
       beforeEach ()->
         logger.proto = "https"
       
-      it "returns the port increased by 1", ()->
-        expect(logger.getPortByProtocol()).toEqual(2)
+      it "returns the portSSL", ()->
+        expect(logger.getPortByProtocol()).toEqual(143)
 
     describe "when the protocol is not https", ()->
       beforeEach ()->
         logger.proto = "http"
       
       it "returns the port", ()->
-        expect(logger.getPortByProtocol()).toEqual("1")
+        expect(logger.getPortByProtocol()).toEqual(80)
 
   describe "createCORSRequest", ()->
     beforeEach ()->
@@ -258,7 +258,7 @@ describe "JSLogger", ()->
 
   describe "getUrl", ()->
     it "returns the log url of the given action type", ()->
-      expect(logger.getUrl("action")).toEqual("protocol://jslogger.com:6987/action")
+      expect(logger.getUrl("action")).toEqual("protocol://jslogger.com:80/action")
 
   describe "windowErrorHandler", ()->
     beforeEach ()->

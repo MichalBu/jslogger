@@ -2,7 +2,7 @@
 
   JSLogger
 
-  @version 1.2
+  @version 1.3
   @author  Dumitru Glavan
   @link    http://jslogger.com
   @link    http://dumitruglavan.com
@@ -17,7 +17,9 @@ class window.JSLogger
 
   host: "jslogger.com"
 
-  port: "6987"
+  port: 80
+
+  portSSL: 143
 
   track: true
 
@@ -37,6 +39,7 @@ class window.JSLogger
     @url             = options.url || @url
     @proto           = options.proto || @getCurrentProtocol()
     @host            = options.host || @host
+    @portSSL         = options.portSSL || @portSSL
     @port            = options.port || @getPortByProtocol()
     @track           = if typeof options.track isnt "undefined" then options.track else @track
     @logWindowErrors = if typeof options.logWindowErrors isnt "undefined" then options.logWindowErrors else @logWindowErrors
@@ -45,8 +48,7 @@ class window.JSLogger
     window.location.protocol.replace(":", "")
 
   getPortByProtocol: ()->
-    return (parseInt(@port, 10) + 1) if @proto is "https"
-    return @port if @proto isnt "https"
+    if @proto is "https" then @portSSL else @port
 
   createCORSRequest: (url)->
     xhr = if typeof XMLHttpRequest isnt "undefined" then new XMLHttpRequest() else null

@@ -3,7 +3,7 @@
 
   JSLogger
 
-  @version 1.2
+  @version 1.3
   @author  Dumitru Glavan
   @link    http://jslogger.com
   @link    http://dumitruglavan.com
@@ -20,7 +20,9 @@
 
     JSLogger.prototype.host = "jslogger.com";
 
-    JSLogger.prototype.port = "6987";
+    JSLogger.prototype.port = 80;
+
+    JSLogger.prototype.portSSL = 143;
 
     JSLogger.prototype.track = true;
 
@@ -45,6 +47,7 @@
       this.url = options.url || this.url;
       this.proto = options.proto || this.getCurrentProtocol();
       this.host = options.host || this.host;
+      this.portSSL = options.portSSL || this.portSSL;
       this.port = options.port || this.getPortByProtocol();
       this.track = typeof options.track !== "undefined" ? options.track : this.track;
       return this.logWindowErrors = typeof options.logWindowErrors !== "undefined" ? options.logWindowErrors : this.logWindowErrors;
@@ -55,8 +58,11 @@
     };
 
     JSLogger.prototype.getPortByProtocol = function() {
-      if (this.proto === "https") return parseInt(this.port, 10) + 1;
-      if (this.proto !== "https") return this.port;
+      if (this.proto === "https") {
+        return this.portSSL;
+      } else {
+        return this.port;
+      }
     };
 
     JSLogger.prototype.createCORSRequest = function(url) {
