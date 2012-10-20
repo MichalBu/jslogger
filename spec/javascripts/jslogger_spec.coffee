@@ -17,7 +17,7 @@ describe "JSLogger", ()->
   	expect(logger.port).toEqual(80)
 
   it "has a portSSL", ()->
-    expect(logger.portSSL).toEqual(143)
+    expect(logger.portSSL).toEqual(443)
 
   it "tracks data by default", ()->
   	expect(logger.track).toEqual(true)
@@ -69,7 +69,7 @@ describe "JSLogger", ()->
         logger.proto = "https"
       
       it "returns the portSSL", ()->
-        expect(logger.getPortByProtocol()).toEqual(143)
+        expect(logger.getPortByProtocol()).toEqual(443)
 
     describe "when the protocol is not https", ()->
       beforeEach ()->

@@ -22,7 +22,7 @@
 
     JSLogger.prototype.port = 80;
 
-    JSLogger.prototype.portSSL = 143;
+    JSLogger.prototype.portSSL = 443;
 
     JSLogger.prototype.track = true;
 

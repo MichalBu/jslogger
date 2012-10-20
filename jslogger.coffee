@@ -19,7 +19,7 @@ class window.JSLogger
 
   port: 80
 
-  portSSL: 143
+  portSSL: 443
 
   track: true
 
