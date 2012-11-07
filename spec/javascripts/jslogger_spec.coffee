@@ -25,15 +25,25 @@ describe "JSLogger", ()->
   it "logs the window errors by default", ()->
   	expect(logger.logWindowErrors).toEqual(true)
 
+  it "has a JSON2 url", ()->
+    expect(logger.jsonParserPath).toEqual("//jslogger.com/json2.js")
+
   describe "constructor", ()->
   	beforeEach ()->
       spyOn(logger, "setOptions")
+      spyOn(logger, "loadJSONParser")
       window.onerror = undefined
 
   	it "sets the default options", ()->
       options = {}
       logger.constructor(options)
       expect(logger.setOptions).toHaveBeenCalledWith(options)
+
+    describe "when there is no JSON parser available", ()->
+      it "loads the JSON parser script ", ()->
+        spyOn(window, "JSON")
+        logger.constructor()
+        expect(logger.loadJSONParser).toHaveBeenCalled()
 
     describe "when the logWindowErrors is true", ()->
       it "sets the window onerror handler", ()->
@@ -259,6 +269,22 @@ describe "JSLogger", ()->
   describe "getUrl", ()->
     it "returns the log url of the given action type", ()->
       expect(logger.getUrl("action")).toEqual("protocol://jslogger.com:80/action")
+
+  describe "loadJSONParser", ()->
+    head            = undefined
+    modifiedRequest = undefined
+
+    beforeEach ()->
+      modifiedRequest =
+        type: "text/javascript"
+        src: logger.jsonParserPath
+      head = createSpyWithStubs("head", {appendChild: null, removeChild: null})
+      spyOn(window.document, "getElementsByTagName").andReturn([head])
+      spyOn(window.document, "createElement").andReturn({})
+
+    it "appends the script element to head", ()->
+      logger.loadJSONParser()
+      expect(head.appendChild).toHaveBeenCalledWith(modifiedRequest)
 
   describe "windowErrorHandler", ()->
     beforeEach ()->

@@ -2,7 +2,7 @@
 
   JSLogger
 
-  @version 1.3
+  @version 1.4
   @author  Dumitru Glavan
   @link    http://jslogger.com
   @link    http://dumitruglavan.com
@@ -25,8 +25,11 @@ class window.JSLogger
 
   logWindowErrors: true
 
+  jsonParserPath: "//jslogger.com/json2.js"
+
   constructor: (options = {})->
     @setOptions(options)
+    @loadJSONParser() if typeof window.JSON isnt "object"
     window.onerror = @windowErrorHandler if @logWindowErrors
 
   log: (data)->
@@ -75,7 +78,7 @@ class window.JSLogger
       request.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
     #request.setRequestHeader("Content-length", params.length)
     #request.setRequestHeader("Connection", "close")
-    request.send(params) if typeof request.send is "function"
+    request.send(params) if typeof request.send is "function" or typeof request.send is "object"
     if request.type and request.type is "text/javascript"
       request.src = "#{request.src}?#{params}"
       body = document.getElementsByTagName("body")[0]
@@ -91,6 +94,13 @@ class window.JSLogger
     if not @url
       @url = ":proto://:host::port".replace(/:proto/, @proto).replace(/:host/, @host).replace(/:port/, @port)
     "#{@url}/#{action}"
+
+  loadJSONParser: ()->
+    jsonScript = document.createElement("script")
+    jsonScript.type = "text/javascript"
+    jsonScript.src = @jsonParserPath
+    head = document.getElementsByTagName("head")[0]
+    head.appendChild(jsonScript)
 
   windowErrorHandler: (msg, url, line)=>
     @log

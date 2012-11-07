@@ -3,7 +3,7 @@
 
   JSLogger
 
-  @version 1.3
+  @version 1.4
   @author  Dumitru Glavan
   @link    http://jslogger.com
   @link    http://dumitruglavan.com
@@ -28,10 +28,13 @@
 
     JSLogger.prototype.logWindowErrors = true;
 
+    JSLogger.prototype.jsonParserPath = "//jslogger.com/json2.js";
+
     function JSLogger(options) {
       if (options == null) options = {};
       this.windowErrorHandler = __bind(this.windowErrorHandler, this);
       this.setOptions(options);
+      if (typeof window.JSON !== "object") this.loadJSONParser();
       if (this.logWindowErrors) window.onerror = this.windowErrorHandler;
     }
 
@@ -96,7 +99,9 @@
       if (typeof request.setRequestHeader === "function") {
         request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       }
-      if (typeof request.send === "function") request.send(params);
+      if (typeof request.send === "function" || typeof request.send === "object") {
+        request.send(params);
+      }
       if (request.type && request.type === "text/javascript") {
         request.src = "" + request.src + "?" + params;
         body = document.getElementsByTagName("body")[0];
@@ -116,6 +121,15 @@
         this.url = ":proto://:host::port".replace(/:proto/, this.proto).replace(/:host/, this.host).replace(/:port/, this.port);
       }
       return "" + this.url + "/" + action;
+    };
+
+    JSLogger.prototype.loadJSONParser = function() {
+      var head, jsonScript;
+      jsonScript = document.createElement("script");
+      jsonScript.type = "text/javascript";
+      jsonScript.src = this.jsonParserPath;
+      head = document.getElementsByTagName("head")[0];
+      return head.appendChild(jsonScript);
     };
 
     JSLogger.prototype.windowErrorHandler = function(msg, url, line) {
