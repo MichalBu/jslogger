@@ -26,6 +26,8 @@
 
     JSLogger.prototype.track = true;
 
+    JSLogger.prototype.apiKey = null;
+
     JSLogger.prototype.logWindowErrors = true;
 
     JSLogger.prototype.jsonParserPath = "//jslogger.com/json2.js";
@@ -52,6 +54,7 @@
       this.host = options.host || this.host;
       this.portSSL = options.portSSL || this.portSSL;
       this.port = options.port || this.getPortByProtocol();
+      this.apiKey = options.apiKey || this.apiKey;
       this.track = typeof options.track !== "undefined" ? options.track : this.track;
       return this.logWindowErrors = typeof options.logWindowErrors !== "undefined" ? options.logWindowErrors : this.logWindowErrors;
     };
@@ -111,9 +114,12 @@
     };
 
     JSLogger.prototype.serialize = function(obj, prefix) {
+      var data;
       if (prefix == null) prefix = "dump";
       if (typeof obj !== "string") obj = JSON ? JSON.stringify(obj) : obj;
-      return "" + prefix + "=" + (encodeURIComponent(obj)) + "&_t=" + (new Date().getTime());
+      data = "" + prefix + "=" + (encodeURIComponent(obj));
+      if (this.apiKey) data = "" + data + "&key=" + this.apiKey;
+      return "" + data + "&_t=" + (new Date().getTime());
     };
 
     JSLogger.prototype.getUrl = function(action) {

@@ -23,6 +23,8 @@ class window.JSLogger
 
   track: true
 
+  apiKey: null
+
   logWindowErrors: true
 
   jsonParserPath: "//jslogger.com/json2.js"
@@ -44,6 +46,7 @@ class window.JSLogger
     @host            = options.host || @host
     @portSSL         = options.portSSL || @portSSL
     @port            = options.port || @getPortByProtocol()
+    @apiKey          = options.apiKey || @apiKey
     @track           = if typeof options.track isnt "undefined" then options.track else @track
     @logWindowErrors = if typeof options.logWindowErrors isnt "undefined" then options.logWindowErrors else @logWindowErrors
 
@@ -88,7 +91,9 @@ class window.JSLogger
   serialize: (obj, prefix = "dump")->
     if typeof obj isnt "string"
       obj = if JSON then JSON.stringify(obj) else obj
-    "#{prefix}=#{encodeURIComponent(obj)}&_t=#{new Date().getTime()}"
+    data = "#{prefix}=#{encodeURIComponent(obj)}"
+    data = "#{data}&key=#{@apiKey}" if @apiKey
+    "#{data}&_t=#{new Date().getTime()}"
 
   getUrl: (action)->
     if not @url

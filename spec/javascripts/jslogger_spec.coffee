@@ -19,6 +19,9 @@ describe "JSLogger", ()->
   it "has a portSSL", ()->
     expect(logger.portSSL).toEqual(443)
 
+  it "has an apiKey", ()->
+    expect(logger.apiKey).toEqual(null)
+
   it "tracks data by default", ()->
   	expect(logger.track).toEqual(true)
 
@@ -65,6 +68,7 @@ describe "JSLogger", ()->
         host: "host"
         track: "track"
         logWindowErrors: "logWindowErrors"
+        apiKey: "apiKey"
       logger.setOptions(options)
       for property, value of options
         expect(logger[property]).toEqual(value)
@@ -265,6 +269,14 @@ describe "JSLogger", ()->
     it "returns a serialized string from the given object, assigned to the given prefix", ()->
       resultSerializedUriEncodedString = "dump=%7B%22type%22%3A%22click%22%2C%22target%22%3A%22red%20button%22%7D&_t=timestamp"
       expect(logger.serialize({type: "click", target: "red button"}, "dump")).toEqual(resultSerializedUriEncodedString)
+
+    describe "when there is an apiKey set", ()->
+      beforeEach ()->
+        logger.apiKey = "apiKey"
+      
+      it "adds the apiKey as a param", ()->
+        resultSerializedUriEncodedString = "dump=%7B%22type%22%3A%22click%22%2C%22target%22%3A%22red%20button%22%7D&key=apiKey&_t=timestamp"
+        expect(logger.serialize({type: "click", target: "red button"}, "dump")).toEqual(resultSerializedUriEncodedString)
 
   describe "getUrl", ()->
     it "returns the log url of the given action type", ()->
