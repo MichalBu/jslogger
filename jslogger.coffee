@@ -2,7 +2,7 @@
 
   JSLogger
 
-  @version 1.4
+  @version 1.5
   @author  Dumitru Glavan
   @link    http://jslogger.com
   @link    http://dumitruglavan.com
