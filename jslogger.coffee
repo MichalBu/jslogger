@@ -2,7 +2,7 @@
 
   JSLogger
 
-  @version 1.5
+  @version 1.6
   @author  Dumitru Glavan
   @link    http://jslogger.com
   @link    http://dumitruglavan.com
@@ -34,11 +34,11 @@ class window.JSLogger
     @loadJSONParser() if typeof window.JSON isnt "object"
     window.onerror = @windowErrorHandler if @logWindowErrors
 
-  log: (data)->
-    @logDataByType("log", data) if @track
+  log: (data, extraParams)->
+    @logDataByType("log", data, extraParams) if @track
 
-  event: (data)->
-    @logDataByType("event", data) if @track
+  event: (data, extraParams)->
+    @logDataByType("event", data, extraParams) if @track
 
   setOptions: (options)->
     @url             = options.url || @url
@@ -69,11 +69,14 @@ class window.JSLogger
       xhr.src = url
     return xhr
 
-  logDataByType: (type, data)->
+  logDataByType: (type, data, extraParams)->
     url = @getUrl(type)
     request = @createCORSRequest(url)
     if request
       params = @serialize(data, "dump")
+      params = "#{params}&#{@serialize(extraParams, "extra_params")}" if extraParams
+      params = "#{params}&key=#{@apiKey}" if @apiKey
+      params = "#{params}&_t=#{new Date().getTime()}"
       @sendData(request, params)
 
   sendData: (request, params)->
@@ -91,9 +94,7 @@ class window.JSLogger
   serialize: (obj, prefix = "dump")->
     if typeof obj isnt "string"
       obj = if JSON then JSON.stringify(obj) else obj
-    data = "#{prefix}=#{encodeURIComponent(obj)}"
-    data = "#{data}&key=#{@apiKey}" if @apiKey
-    "#{data}&_t=#{new Date().getTime()}"
+    "#{prefix}=#{encodeURIComponent(obj)}"
 
   getUrl: (action)->
     if not @url

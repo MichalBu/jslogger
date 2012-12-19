@@ -161,8 +161,8 @@ describe "JSLogger", ()->
         logger.track = true
 
       it "logs the given data by type log", ()->
-        logger.log("data")
-        expect(logger.logDataByType).toHaveBeenCalledWith("log", "data")
+        logger.log("data", {})
+        expect(logger.logDataByType).toHaveBeenCalledWith("log", "data", {})
 
     describe "when not in track mode", ()->
       beforeEach ()->
@@ -181,8 +181,8 @@ describe "JSLogger", ()->
         logger.track = true
 
       it "logs the given data by type event", ()->
-        logger.event("data")
-        expect(logger.logDataByType).toHaveBeenCalledWith("event", "data")
+        logger.event("data", {})
+        expect(logger.logDataByType).toHaveBeenCalledWith("event", "data", {})
 
     describe "when not in track mode", ()->
       beforeEach ()->
@@ -194,6 +194,10 @@ describe "JSLogger", ()->
 
   describe "logDataByType", ()->
     beforeEach ()->
+      date =
+        getTime: ()->
+          "timestamp"
+      spyOn(window, "Date").andReturn(date)
       spyOn(logger, "getUrl").andReturn("url")
       spyOn(logger, "createCORSRequest").andReturn("request")
       spyOn(logger, "serialize").andReturn("params")
@@ -212,9 +216,26 @@ describe "JSLogger", ()->
         logger.logDataByType("type", "data")
         expect(logger.serialize).toHaveBeenCalledWith("data", "dump")
 
-      it "sends the data", ()->
-        logger.logDataByType("type", "data")
-        expect(logger.sendData).toHaveBeenCalledWith("request", "params")
+      it "sends the data with the timestamp attached to it", ()->
+          logger.logDataByType("type", "data")
+          expect(logger.sendData).toHaveBeenCalledWith("request", "params&_t=timestamp")
+
+      describe "when there are extra params given", ()->
+        it "serializes the extra params with the extra_params prefix", ()->
+          logger.logDataByType("type", "data", "extraParams")
+          expect(logger.serialize).toHaveBeenCalledWith("extraParams", "extra_params")
+
+        it "sends the data and extra params attached to it", ()->
+          logger.logDataByType("type", "data", "extraParams")
+          expect(logger.sendData).toHaveBeenCalledWith("request", "params&params&_t=timestamp")
+
+      describe "when there is an apiKey set", ()->
+        beforeEach ()->
+          logger.apiKey = "apiKey"
+        
+        it "sends the data with the api key attached to it", ()->
+          logger.logDataByType("type", "data")
+          expect(logger.sendData).toHaveBeenCalledWith("request", "params&key=apiKey&_t=timestamp")
 
   describe "sendData", ()->
     request = undefined
@@ -267,16 +288,8 @@ describe "JSLogger", ()->
       spyOn(window, "Date").andReturn(date)
 
     it "returns a serialized string from the given object, assigned to the given prefix", ()->
-      resultSerializedUriEncodedString = "dump=%7B%22type%22%3A%22click%22%2C%22target%22%3A%22red%20button%22%7D&_t=timestamp"
+      resultSerializedUriEncodedString = "dump=%7B%22type%22%3A%22click%22%2C%22target%22%3A%22red%20button%22%7D"
       expect(logger.serialize({type: "click", target: "red button"}, "dump")).toEqual(resultSerializedUriEncodedString)
-
-    describe "when there is an apiKey set", ()->
-      beforeEach ()->
-        logger.apiKey = "apiKey"
-      
-      it "adds the apiKey as a param", ()->
-        resultSerializedUriEncodedString = "dump=%7B%22type%22%3A%22click%22%2C%22target%22%3A%22red%20button%22%7D&key=apiKey&_t=timestamp"
-        expect(logger.serialize({type: "click", target: "red button"}, "dump")).toEqual(resultSerializedUriEncodedString)
 
   describe "getUrl", ()->
     it "returns the log url of the given action type", ()->

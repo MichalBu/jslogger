@@ -3,7 +3,7 @@
 
   JSLogger
 
-  @version 1.5
+  @version 1.6
   @author  Dumitru Glavan
   @link    http://jslogger.com
   @link    http://dumitruglavan.com
@@ -40,12 +40,12 @@
       if (this.logWindowErrors) window.onerror = this.windowErrorHandler;
     }
 
-    JSLogger.prototype.log = function(data) {
-      if (this.track) return this.logDataByType("log", data);
+    JSLogger.prototype.log = function(data, extraParams) {
+      if (this.track) return this.logDataByType("log", data, extraParams);
     };
 
-    JSLogger.prototype.event = function(data) {
-      if (this.track) return this.logDataByType("event", data);
+    JSLogger.prototype.event = function(data, extraParams) {
+      if (this.track) return this.logDataByType("event", data, extraParams);
     };
 
     JSLogger.prototype.setOptions = function(options) {
@@ -87,12 +87,17 @@
       return xhr;
     };
 
-    JSLogger.prototype.logDataByType = function(type, data) {
+    JSLogger.prototype.logDataByType = function(type, data, extraParams) {
       var params, request, url;
       url = this.getUrl(type);
       request = this.createCORSRequest(url);
       if (request) {
         params = this.serialize(data, "dump");
+        if (extraParams) {
+          params = "" + params + "&" + (this.serialize(extraParams, "extra_params"));
+        }
+        if (this.apiKey) params = "" + params + "&key=" + this.apiKey;
+        params = "" + params + "&_t=" + (new Date().getTime());
         return this.sendData(request, params);
       }
     };
@@ -114,12 +119,9 @@
     };
 
     JSLogger.prototype.serialize = function(obj, prefix) {
-      var data;
       if (prefix == null) prefix = "dump";
       if (typeof obj !== "string") obj = JSON ? JSON.stringify(obj) : obj;
-      data = "" + prefix + "=" + (encodeURIComponent(obj));
-      if (this.apiKey) data = "" + data + "&key=" + this.apiKey;
-      return "" + data + "&_t=" + (new Date().getTime());
+      return "" + prefix + "=" + (encodeURIComponent(obj));
     };
 
     JSLogger.prototype.getUrl = function(action) {
