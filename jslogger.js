@@ -36,8 +36,10 @@
       if (options == null) options = {};
       this.windowErrorHandler = __bind(this.windowErrorHandler, this);
       this.setOptions(options);
-      if (typeof window.JSON !== "object") this.loadJSONParser();
-      if (this.logWindowErrors) window.onerror = this.windowErrorHandler;
+      if (window) {
+        if (typeof window.JSON !== "object") this.loadJSONParser();
+        if (this.logWindowErrors) window.onerror = this.windowErrorHandler;
+      }
     }
 
     JSLogger.prototype.log = function(data, extraParams) {

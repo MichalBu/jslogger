@@ -31,8 +31,9 @@ class window.JSLogger
 
   constructor: (options = {})->
     @setOptions(options)
-    @loadJSONParser() if typeof window.JSON isnt "object"
-    window.onerror = @windowErrorHandler if @logWindowErrors
+    if window
+      @loadJSONParser() if typeof window.JSON isnt "object"
+      window.onerror = @windowErrorHandler if @logWindowErrors
 
   log: (data, extraParams)->
     @logDataByType("log", data, extraParams) if @track
@@ -110,6 +111,6 @@ class window.JSLogger
 
   windowErrorHandler: (msg, url, line)=>
     @log
-      msg: msg,
-      url: url,
+      msg: msg
+      url: url
       line: line
