@@ -30,7 +30,6 @@ class window.JSLogger
   jsonParserPath: "//jslogger.com/json2.js"
 
   constructor: (options = {})->
-    console.log window
     @setOptions(options)
     @loadJSONParser() if typeof window.JSON isnt "object"
     window.onerror = @windowErrorHandler if @logWindowErrors
