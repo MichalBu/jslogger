@@ -41,14 +41,12 @@ helper =
 
     jsdom.env(configuration)
 
-    beforeEach(() ->
-      waitsFor(() ->
+  waitForDom: ()->
+    beforeEach ()->
+      waitsFor ()->
         return typeof window isnt "undefined"
-      )
-      runs(() ->
-       throw new Error("window.document was not set") unless window.document
-      )
-    )
+      runs ()->
+        throw new Error("window.document was not set") unless window.document
 
 helper.setupWindow()
 

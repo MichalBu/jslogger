@@ -1,4 +1,5 @@
 spec_helper = require("./support/spec_helper")
+spec_helper.waitForDom()
 
 describe "JSLogger", ()->
   logger = undefined
