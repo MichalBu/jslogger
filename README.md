@@ -56,11 +56,11 @@ new JSLogger({logWindowErrors: false});
 
 ##How to apply?
 
-Our tool is still in BETA version. You can register here: [http://jslogger.com:5000/manage][]. For other questions please send an e-mail to [support@jslogger.com][].
+Our tool is still in BETA version. You can register here: [http://jslogger.com/register][]. For other questions please send an e-mail to [support@jslogger.com][].
 For quick questions you can always ping us on Twitter - [@jslogger][] or tweet about how awesome JSLogger is - [#jslogger][].
 Like us on [Facebook][] and become a part of the [JSLogger community][].
 
-[http://jslogger.com:5000/manage]: http://jslogger.com:5000/manage
+[http://jslogger.com/register]: http://jslogger.com/register
 [support@jslogger.com]: mailto:support@jslogger.com?subject=JSLogger.com%20support
 [@jslogger]: https://twitter.com/intent/tweet?text=@jslogger
 [#jslogger]: https://twitter.com/intent/tweet?text=%23jslogger%20is%20awesome!
