@@ -40,12 +40,12 @@
       if (this.logWindowErrors) window.onerror = this.windowErrorHandler;
     }
 
-    JSLogger.prototype.log = function(data, extraParams) {
-      if (this.track) return this.logDataByType("log", data, extraParams);
+    JSLogger.prototype.log = function(data, extraParams, callback) {
+      if (this.track) return this.logDataByType("log", data, extraParams, callback);
     };
 
-    JSLogger.prototype.event = function(data, extraParams) {
-      if (this.track) return this.logDataByType("event", data, extraParams);
+    JSLogger.prototype.event = function(data, extraParams, callback) {
+      if (this.track) return this.logDataByType("event", data, extraParams, callback);
     };
 
     JSLogger.prototype.setOptions = function(options) {
@@ -71,7 +71,7 @@
       }
     };
 
-    JSLogger.prototype.createCORSRequest = function(url) {
+    JSLogger.prototype.createCORSRequest = function(url, callback) {
       var xhr;
       xhr = typeof XMLHttpRequest !== "undefined" ? new XMLHttpRequest() : null;
       if (this.proto !== "https" && xhr && "withCredentials" in xhr) {
@@ -84,13 +84,22 @@
         xhr.type = "text/javascript";
         xhr.src = url;
       }
+	  if(callback){
+		xhr.onreadystatechange = function(){
+			if (xhr.readyState == 4){
+				callback(xhr);
+			}
+		};
+		xhr.onerror = function(e){ callback(e);};
+	  }
+	  
       return xhr;
     };
 
-    JSLogger.prototype.logDataByType = function(type, data, extraParams) {
+    JSLogger.prototype.logDataByType = function(type, data, extraParams, callback) {
       var params, request, url;
       url = this.getUrl(type);
-      request = this.createCORSRequest(url);
+      request = this.createCORSRequest(url, callback);
       if (request) {
         params = this.serialize(data, "dump");
         if (extraParams) {
